@@ -111,18 +111,18 @@ export function getNewOrientationFromOld(
     };
 }
 
-export function generateOrientations() {
-    const startingOrientation: ClipOrientation = {
-        origin: new THREE.Vector3(0, 0, 0),
-        normal: new THREE.Vector3(0, 0, 1),
-        major: new THREE.Vector3(0, 1, 0),
-    };
+export const startingOrientation: ClipOrientation = {
+    origin: new THREE.Vector3(0, 0, 0),
+    normal: new THREE.Vector3(0, 1, 0),
+    major: new THREE.Vector3(0, 0, 1),
+};
 
+export function generateOrientations() {
     const angle = Math.PI / 6;
 
     const transforms = [];
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 0; i++) {
         const a = i % 4;
 
         switch (a) {

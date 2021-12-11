@@ -1,4 +1,10 @@
-import { Canvas, GroupProps, MeshProps } from "@react-three/fiber";
+import {
+    Canvas,
+    GroupProps,
+    MeshProps,
+    useFrame,
+    useThree,
+} from "@react-three/fiber";
 import {
     ContactShadows,
     Environment,
@@ -16,8 +22,16 @@ import {
     clipOuterWidth,
     clipWireRadius,
     intermediateWireHeight,
+    startingBlockHeight,
+    startingBlockRadius,
+    startingBlockWidth,
 } from "./constants";
-import { ClipOrientation, generateOrientations } from "./orientation";
+import {
+    ClipOrientation,
+    generateOrientations,
+    getNewOrientationFromOld,
+    startingOrientation,
+} from "./orientation";
 // @ts-ignore
 // import hdr from "./comfy_cafe_4k.hdr";
 
@@ -110,7 +124,7 @@ interface WireProps {
 
 const StraightWire: React.FC<MeshProps & WireProps> = (props) => {
     return (
-        <mesh {...props} receiveShadow>
+        <mesh {...props} receiveShadow castShadow>
             <cylinderBufferGeometry
                 args={[clipWireRadius, clipWireRadius, props.height, 10]}
             />
@@ -143,8 +157,8 @@ const ballMaterial = {
     cleacoatRoughness: 0.1,
     metalness: 1,
     roughness: 0.6,
-    color: 0x00ffa3,
-    // normalMap: texture,
+    color: 0xffbf00,
+    normalMap: texture,
     normalScale: new THREE.Vector2(0.15, 0.15),
     // envMap: envmap.texture,
 };
@@ -230,63 +244,263 @@ interface OClipProps {
 
 export const OrientedClip: React.FC<OClipProps> = (props) => {
     const clip = useRef<any>();
+    // const marker = useRef<any>();
 
     const [loaded, setLoaded] = useState<boolean>(false);
 
+    // const [lGeo, setLGeo] = useState<THREE.BufferGeometry>(
+    //     new THREE.BufferGeometry()
+    // );
+
+    // const lineGeometry = useMemo(() => {
+    //     const points = [];
+    //     const { orientation } = props;
+
+    //     const { origin, normal, major } = orientation;
+
+    //     major.normalize();
+
+    //     const p0 = new THREE.Vector3();
+    //     p0.copy(origin);
+    //     p0.addScaledVector(normal, clipOuterHeight);
+
+    //     const p1 = new THREE.Vector3();
+    //     p1.copy(origin);
+
+    //     const p2 = new THREE.Vector3();
+    //     p2.copy(origin);
+
+    //     p2.addScaledVector(major, clipOuterHeight);
+
+    //     return new THREE.BufferGeometry().setFromPoints([p0, p1, p2]);
+    // }, []);
+
+    function setToOrientation(orientation: ClipOrientation) {
+        const startingNormal = new THREE.Vector3(0, 0, 1);
+        const startingMajor = new THREE.Vector3(0, 1, 0);
+
+        startingNormal.applyEuler(clip.current.rotation);
+        startingMajor.applyEuler(clip.current.rotation);
+
+        const { origin, normal, major } = orientation;
+
+        major.normalize();
+        normal.normalize();
+
+        // console.log(clip.current);
+
+        /* First translate the clip to the proper position */
+        clip.current.position.copy(origin);
+        // marker.current.position.copy(origin);
+        // console.log(clip.current.position, clip.current.rotation);
+
+        // console.log(clip.current);
+        const quart1 = new THREE.Quaternion();
+        quart1.setFromUnitVectors(startingNormal, normal);
+
+        // /* Perform the first rotation */
+        clip.current.applyQuaternion(quart1);
+        // // marker.current.applyQuaternion(quart1);
+
+        // /* Also rotate the starting major */
+        // startingMajor.applyQuaternion(quart1);
+
+        // const quart2 = new THREE.Quaternion();
+        // quart2.setFromUnitVectors(startingMajor, major);
+
+        // clip.current.applyQuaternion(quart2);
+        // // marker.current.applyQuaternion(quart2);
+        // startingMajor.applyQuaternion(quart2);
+
+        // const q22 = new THREE.Quaternion();
+        // q22.setFromUnitVectors(startingMajor, major);
+
+        // clip.current.applyQuaternion(q22);
+
+        // marker.current.applyQuaternion(q22);
+
+        // setLGeo(new THREE.BufferGeometry().setFromPoints([p1, p2]));
+    }
+
     useEffect(() => {
-        if (!loaded) {
-            const { orientation } = props;
+        const startingNormal = new THREE.Vector3(0, 0, 1);
+        const startingMajor = new THREE.Vector3(0, 1, 0);
 
-            const startingNormal = new THREE.Vector3(0, 0, 1);
-            const startingMajor = new THREE.Vector3(0, 1, 0);
+        startingNormal.applyEuler(clip.current.rotation);
+        startingMajor.applyEuler(clip.current.rotation);
 
-            const { origin, normal, major } = orientation;
+        const { origin, normal, major } = props.orientation;
 
-            major.normalize();
-            normal.normalize();
+        major.normalize();
+        normal.normalize();
 
-            console.log(clip.current);
+        // console.log(clip.current);
 
-            /* First translate the clip to the proper position */
-            clip.current.position.copy(origin);
+        /* First translate the clip to the proper position */
+        clip.current.position.copy(origin);
+        // marker.current.position.copy(origin);
 
-            console.log(clip.current);
-            const quart1 = new THREE.Quaternion();
-            quart1.setFromUnitVectors(startingNormal, normal);
+        // console.log(clip.current);
+        const quart1 = new THREE.Quaternion();
+        quart1.setFromUnitVectors(startingNormal, normal);
 
-            /* Perform the first rotation */
-            clip.current.applyQuaternion(quart1);
+        /* Perform the first rotation */
+        clip.current.applyQuaternion(quart1);
+        // marker.current.applyQuaternion(quart1);
 
-            /* Also rotate the starting major */
-            startingMajor.applyQuaternion(quart1);
+        /* Also rotate the starting major */
+        startingMajor.applyQuaternion(quart1);
 
-            const quart2 = new THREE.Quaternion();
-            quart2.setFromUnitVectors(startingMajor, major);
+        const quart2 = new THREE.Quaternion();
+        quart2.setFromUnitVectors(startingMajor, major);
 
-            clip.current.applyQuaternion(quart2);
-            setLoaded(true);
-        }
-    }, []);
+        clip.current.applyQuaternion(quart2);
+        // marker.current.applyQuaternion(quart2);
+        startingMajor.applyQuaternion(quart2);
 
-    return <PaperClip clipRef={clip} material={props.material} />;
+        const q22 = new THREE.Quaternion();
+        q22.setFromUnitVectors(startingMajor, major);
+
+        clip.current.applyQuaternion(q22);
+        // marker.current.applyQuaternion(q22);
+
+        // setLGeo(new THREE.BufferGeometry().setFromPoints([p1, p2]));
+    }, [props.orientation]);
+
+    return (
+        <>
+            <PaperClip clipRef={clip} material={props.material} />
+            {/* <mesh ref={marker} material={props.material}>
+                <boxBufferGeometry
+                    args={[clipInnerHeight, clipInnerHeight, clipInnerHeight]}
+                />
+                {/* <meshStandardMaterial color="hotpink" /> */}
+            {/* </mesh> */}
+            {/* <line geometry={lineGeometry}>
+                <lineBasicMaterial
+                    attach="material"
+                    color={"#9c88ff"}
+                    linewidth={10}
+                    linecap={"round"}
+                    linejoin={"round"}
+                />
+            </line>
+            <line geometry={lGeo}>
+                <lineBasicMaterial
+                    attach="material"
+                    color={"red"}
+                    linewidth={20}
+                    linecap={"round"}
+                    linejoin={"round"}
+                />
+            </line> */}
+        </>
+    );
 };
 
 const mat = new THREE.MeshStandardMaterial({
     color: 0x00ffa3,
 });
 
-function App() {
+// const { origin, major, normal } = startingOrientation;
+
+// const a1 = new THREE.Vector3();
+// a1.copy(origin);
+
+// a1.addScaledVector(major, clipOuterHeight / 2);
+
+function AppInner() {
     const orientations = useMemo(generateOrientations, []);
+
+    const [theta, setTheta] = useState<number>(Math.PI / 2);
+    const [psi, setPsi] = useState<number>(0);
+
+    const [o, setO] = useState<ClipOrientation[]>([startingOrientation]);
 
     const minY = orientations.reduce(
         (prev, next) => (next.origin.y < prev ? next.origin.y : prev),
         0
     );
 
-    console.log(orientations);
+    const lastOrientation = o[o.length - 1];
+    const { origin, major, normal } = lastOrientation;
+
+    const nextOrientation = getNewOrientationFromOld(lastOrientation, {
+        theta,
+        psi,
+    });
+
+    useEffect(() => {
+        function handler(e: MouseEvent) {
+            if (e.shiftKey) {
+                setO([...o, nextOrientation]);
+            }
+        }
+
+        window.addEventListener("click", handler);
+
+        return () => {
+            window.removeEventListener("click", handler);
+        };
+    }, [theta, psi]);
+
+    useFrame(({ camera, clock, mouse }) => {
+        const pos = new THREE.Vector3();
+
+        const len = camera.position.length() * 2;
+
+        const vec = new THREE.Vector3(len * mouse.x, len * mouse.y, 0);
+        vec.unproject(camera);
+
+        console.log(vec, camera.position);
+
+        // pos.copy(vec);
+        // pos.addScaledVector(camera.position, -1);
+
+        pos.copy(vec);
+
+        const b = new THREE.Vector3();
+        b.copy(origin);
+
+        b.addScaledVector(major, clipOuterHeight / 2);
+
+        pos.addScaledVector(b, -1);
+
+        const time = clock.getElapsedTime();
+        const cp = new THREE.Vector3();
+        cp.copy(pos);
+
+        const p = new THREE.Vector3();
+
+        p.crossVectors(major, normal);
+
+        cp.projectOnPlane(normal);
+        cp.normalize();
+        // console.log(time);
+
+        setTheta((p.dot(cp) > 0 ? -1 : 1) * cp.angleTo(major));
+
+        const tip = new THREE.Vector3();
+
+        tip.copy(origin);
+        const itip = new THREE.Vector3();
+
+        itip.addScaledVector(cp, clipOuterWidth / 2);
+
+        tip.add(itip);
+
+        const diff = new THREE.Vector3();
+        diff.copy(pos);
+
+        diff.addScaledVector(tip, -1);
+
+        setPsi(diff.angleTo(cp));
+    });
+
+    // console.log(nextOrientation);
 
     return (
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 4], fov: 50 }}>
+        <>
             <ambientLight intensity={0.7} />
             <spotLight
                 intensity={0.5}
@@ -300,27 +514,83 @@ function App() {
                     <boxBufferGeometry args={[1, 1, 1]} />
                     <meshStandardMaterial color="hotpink" />
                 </mesh> */}
-
-                {orientations.map((o, i) => (
-                    <OrientedClip key={i} orientation={o} material={ballMat} />
+                {/* <mesh>
+                    <boxBufferGeometry arg={} />
+                </mesh> */}
+                {/* <group>
+                    <mesh
+                        material={ballMat}
+                        position-y={-startingBlockHeight / 2}
+                    >
+                         <octahedronBufferGeometry
+                            args={[startingBlockRadius, 0]}
+                        /> 
+                        <cylinderBufferGeometry
+                            args={[
+                                startingBlockRadius,
+                                startingBlockRadius,
+                                startingBlockRadius,
+                                30,
+                            ]}
+                        />
+                    </mesh>
+                </group> */}
+                {o.map((or) => (
+                    <OrientedClip orientation={or} material={ballMat} />
                 ))}
-                <Environment preset="city" />
+                <OrientedClip
+                    orientation={startingOrientation}
+                    material={ballMat}
+                />
+                <OrientedClip
+                    orientation={nextOrientation}
+                    material={ballMat}
+                />
+
+                {/* {orientations.map((o, i) => (
+                    <OrientedClip key={i} orientation={o} material={ballMat} />
+                ))} */}
+                <Environment preset="sunset" />
                 <ContactShadows
-                    rotation-x={Math.PI / 2}
+                    // rotation-x={Math.PI / 2}
                     position={[0, minY - 0.4, 0]}
-                    opacity={0.7}
+                    opacity={0.4}
                     width={10}
                     height={10}
-                    blur={1.5}
-                    far={10}
+                    blur={1}
+                    far={20}
                 />
             </Suspense>
             <OrbitControls
-                minPolarAngle={Math.PI / 2}
+                minPolarAngle={Math.PI / 3}
                 maxPolarAngle={Math.PI / 2}
+                // onChange={(e) => {
+                //     console.log(e.target);
+                // }}
                 // enableZoom={true}
                 // enablePan={false}
             />
+        </>
+    );
+}
+
+function App() {
+    // useThree(({ camera }) => {
+    //     // camera.position.set(0, 1, 1);
+    // });
+
+    const orientations = useMemo(generateOrientations, []);
+
+    const minY = orientations.reduce(
+        (prev, next) => (next.origin.y < prev ? next.origin.y : prev),
+        0
+    );
+
+    // console.log(orientations);
+
+    return (
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 2, 2], fov: 50 }}>
+            <AppInner />
         </Canvas>
     );
 }
