@@ -32,6 +32,9 @@ import {
     getNewOrientationFromOld,
     startingOrientation,
 } from "./orientation";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Landing from "./routes/landing/landing";
+import Editor from "./routes/editor/editor";
 // @ts-ignore
 // import hdr from "./comfy_cafe_4k.hdr";
 
@@ -589,10 +592,19 @@ function App() {
     // console.log(orientations);
 
     return (
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 2, 2], fov: 50 }}>
-            <AppInner />
-        </Canvas>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/editor" element={<Editor />} />
+                <Route path="/bee" element={<Landing />} />
+            </Routes>
+        </BrowserRouter>
     );
+
+    // return (
+    //     <Canvas shadows dpr={[1, 2]} camera={{ position: [4, 2, 2], fov: 50 }}>
+    //         <AppInner />
+    //     </Canvas>
+    // );
 }
 // <Canvas
 //     gl={{ antialias: true }}
