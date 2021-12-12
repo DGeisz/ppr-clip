@@ -24,11 +24,34 @@ const EditorInner: React.FC = () => {
 
     const [theta, setTheta] = useState<number>(0);
     const [psi, setPsi] = useState<number>(0);
+    const [shiftDown, setShiftDown] = useState<boolean>(false);
 
     const nextOrientation = getNewOrientationFromOld(lastOrientation, {
         theta,
         psi,
     });
+
+    useEffect(() => {
+        function keydownHandler(e: KeyboardEvent) {
+            if (e.key.toLowerCase() === "shift") {
+                setShiftDown(true);
+            }
+        }
+
+        function keyupHandler(e: KeyboardEvent) {
+            if (e.key.toLowerCase() === "shift") {
+                setShiftDown(false);
+            }
+        }
+
+        window.addEventListener("keydown", keydownHandler);
+        window.addEventListener("keyup", keyupHandler);
+
+        return () => {
+            window.removeEventListener("keydown", keydownHandler);
+            window.removeEventListener("keyup", keyupHandler);
+        };
+    }, []);
 
     useEffect(() => {
         function handler(e: MouseEvent) {
@@ -177,6 +200,9 @@ const EditorInner: React.FC = () => {
             <OrbitControls
                 minPolarAngle={Math.PI / 3}
                 maxPolarAngle={Math.PI / 2}
+                enablePan={!shiftDown}
+                enableRotate={!shiftDown}
+                enableZoom={!shiftDown}
             />
         </>
     );
