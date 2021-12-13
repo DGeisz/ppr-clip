@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
     OrientedClip,
@@ -8,6 +8,8 @@ import {
 import { BasicGold, BasicMix } from "../../global_three/materials";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { ClipOrientation } from "../../global_building_blocks/paper_clip/types/orientation";
+import clsx from "clsx";
+import Markdown from "react-markdown";
 
 function Box() {
     return (
@@ -64,32 +66,179 @@ const SpinningClipBackground: React.FC = () => {
 
 const MainPage: React.FC = () => {
     return (
-        <div className="h-full w-full">
-            <div className="flex justify-center flex-row bg-slate-600/20 text-white text-center backdrop-blur-sm py-5 text-xl font-bold">
+        <div className="h-full w-full pb-20">
+            <div
+                className={clsx(
+                    "flex",
+                    "justify-center",
+                    "flex-row",
+                    "bg-slate-600/20",
+                    "text-white",
+                    "text-center",
+                    "backdrop-blur-sm",
+                    "py-5",
+                    "sm:text-xl",
+                    "font-bold"
+                )}
+            >
                 <div>About</div>
-                <div className="px-10">Gallery</div>
+                <div className={clsx("px-5", "sm:px-10")}>Gallery</div>
                 <div>Follow</div>
             </div>
-            <div className="flex justify-center pt-10">
+            <div className="flex flex-col justify-center pt-10">
                 <div
-                    className={
-                        "flex flex-col justify-center items-center bg-slate-800/60 backdrop-blur-md rounded-md px-40 py-10"
-                    }
+                    className={clsx(
+                        "w-full",
+                        "mx-auto",
+                        "md:max-w-2xl",
+                        "lg:max-w-5xl",
+                        "bg-slate-800/60",
+                        "backdrop-blur-md",
+                        "md:rounded-md",
+                        "py-10"
+                    )}
                 >
-                    <div className="font-extrabold text-9xl text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-purple-600">
-                        ppr_clip
+                    <div
+                        className={clsx(
+                            "flex",
+                            "flex-col",
+                            "justify-center",
+                            "items-center"
+                        )}
+                    >
+                        <div
+                            className={clsx(
+                                "font-extrabold",
+                                "text-7xl",
+                                "md:text-8xl",
+                                "lg:text-9xl",
+                                "text-transparent",
+                                "bg-clip-text",
+                                "bg-gradient-to-br",
+                                "from-blue-300",
+                                "to-purple-600"
+                            )}
+                        >
+                            ppr_clip
+                        </div>
+                        <div
+                            className={clsx(
+                                "block",
+                                "flex-row",
+                                "text-white",
+                                "pt-10",
+                                "sm:pt-20",
+                                "font-semibold",
+                                "sm:text-xl",
+                                "md:text-2xl",
+                                "text-center"
+                            )}
+                        >
+                            <span className="inline-block">
+                                Constantly Evolving.
+                            </span>
+                            <span className="px-1 sm:px-3 inline-block">
+                                Intrinsically Valuable.
+                            </span>
+                            <span className="inline-block">
+                                Artistically Disruptive.
+                            </span>
+                        </div>
+                        <div
+                            className={clsx(
+                                "text-white",
+                                "font-bold",
+                                "pt-2",
+                                "sm:pt-5",
+                                "text-3xl",
+                                "md:text-4xl",
+                                "lg:text-5xl"
+                            )}
+                        >
+                            NFTs,
+                            <span
+                                className={clsx(
+                                    "text-transparent",
+                                    "bg-clip-text",
+                                    "bg-gradient-to-br",
+                                    "from-yellow-400",
+                                    "to-red-600"
+                                )}
+                            >
+                                {" "}
+                                Leveled Up
+                            </span>
+                        </div>
                     </div>
-                    <div className="flex flex-row text-white pt-20 font-semibold text-2xl">
-                        <span>Constantly Evolving.</span>
-                        <span className="px-3">Intrinsically Valuable.</span>
-                        <span>Artistically Disruptive.</span>
-                    </div>
-                    <div className="text-white font-bold pt-5 text-5xl">
-                        NFTs,{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-br from-yellow-400 to-red-600">
-                            {" "}
-                            Leveled Up
-                        </span>
+                </div>
+                <div
+                    className={clsx(
+                        "w-full",
+                        "mt-10",
+                        "mx-auto",
+                        "md:max-w-2xl",
+                        "lg:max-w-5xl",
+                        "bg-slate-800/60",
+                        "backdrop-blur-md",
+                        "md:rounded-md",
+                        "py-5",
+                        "px-5",
+                        "mb-20"
+                    )}
+                >
+                    <div className="text-white text-lg md:text-xl">
+                        <div className="text-center text-4xl font-bold mb-4">
+                            How it all began
+                        </div>
+                        <Markdown>
+                            {`
+Long ago during the 21st century, philosophers fretted about
+a thought experiment in which an AI tasked with
+creating paperclips attains super-intelligence.
+Though the AI has intellectual powers far
+outstripping that of man, its only "desire" is to
+create paperclips, and thus it begins crusading
+throughout the cosmos transforming all perceived
+matter into paperclips.
+
+This "Paperclip Maximizer" thought experiment was largely used
+to demonstrate the potentially catastrophic issues that could arise 
+when applying super-intelligence to menial tasks.  Few, however, ever
+dreamed it would ever come to pass...
+
+By 2033, 13-year-old X Æ A-XII had long been messing with neuromorphic computers. While his
+father was busy preparing the Zaphod 18 mission to Mars, X Æ A-XII was playing at building bots
+to mine Jax in Jaxxaverse.  
+
+Though companies had been making clear strides in state-of-the-art AI using the latest
+SpreadProp algorithms (a set of more localized and distributed cousins to the old BackProp algorithms),
+it seemed clear that humanity was still several years away from General Artificial Intelligence.  
+
+Being the divine offspring of Elon Musk and Grimes, people had always joked that X Æ A-XII 
+would undoubtedly change the world.  Though these comments were ever wearisome, it quickly 
+became clear that X Æ A-XII possessed both the raw intelligence of his father and the profound
+creative streak of his mother.  
+
+Though perhaps he should have been "applying" himself more to his studies, X Æ A-XII thought 
+it was perfectly acceptable for him to enjoy his childhood, and therefore spent a good portion
+of this time playing with his friends in different Metaverses.  Though Terriverse was probably the most
+fun, Jaxxaverse had the most interesting set of crypto-physics, so X Æ A-XII spent a good portion
+of time experimenting in that that space.
+
+A while back, X Æ A-XII had taught himself about SpreadProp networks in order to build a
+pseudo-intelligent sidekick in Jaxxiverse (who he named Neddy). However, not only did SpreadProp networks seem
+pretty rudimentary to X Æ A-XII, but they also felt somewhat limiting, especially
+in their ability to represent invariant features in arbitrary datasets.
+
+By making increasingly complex tweaks to state-of-the-art SpreadProp networks, X Æ A-XII
+was able to continually improve the performance and personality of Neddy.  Neddy 
+was actually performing so well that X Æ A-XII decided to troll Jaxxaverse.
+
+By the 2030s, it was fairly common for high schools to include a unit on 
+existential risks (an incredibly boring course), but the "Paperclip Maximizer" problem
+was regularly taught and therefore common knowledge.
+`}
+                        </Markdown>
                     </div>
                 </div>
             </div>
