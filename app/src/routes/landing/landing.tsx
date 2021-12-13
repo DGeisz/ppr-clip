@@ -192,7 +192,7 @@ const MainPage: React.FC = () => {
                         </div>
                         <Markdown>
                             {`
-Long ago during the 21st century, philosophers fretted about
+During the 21st century, philosophers fretted about
 a thought experiment in which an AI tasked with
 creating paperclips attains super-intelligence.
 Though the AI has intellectual powers far
@@ -220,13 +220,13 @@ became clear that X Æ A-XII possessed both the raw intelligence of his father a
 creative streak of his mother.  
 
 Though perhaps he should have been "applying" himself more to his studies, X Æ A-XII thought 
-it was perfectly acceptable for him to enjoy his childhood, and therefore spent a good portion
+it was perfectly acceptable that he enjoy his childhood, and therefore spent a good portion
 of this time playing with his friends in different Metaverses.  Though Terriverse was probably the most
 fun, Jaxxaverse had the most interesting set of crypto-physics, so X Æ A-XII spent a good portion
 of time experimenting in that that space.
 
 A while back, X Æ A-XII had taught himself about SpreadProp networks in order to build a
-pseudo-intelligent sidekick in Jaxxiverse (who he named Neddy). However, not only did SpreadProp networks seem
+pseudo-intelligent sidekick in Jaxxaverse (who he named Neddy). However, not only did SpreadProp networks seem
 pretty rudimentary to X Æ A-XII, but they also felt somewhat limiting, especially
 in their ability to represent invariant features in arbitrary datasets.
 
@@ -237,7 +237,31 @@ was actually performing so well that X Æ A-XII decided to troll Jaxxaverse.
 By the 2030s, it was fairly common for high schools to include a unit on 
 existential risks (an incredibly boring course), but the "Paperclip Maximizer" problem
 was regularly taught and therefore common knowledge.
-`}
+
+X Æ A-XII therefore thought it would be funny to release Neddy onto Jaxxaverse 
+as a Paperclip Maximizer. X Æ A-XII was pretty confident Neddy wasn't actually
+close to being GAI, and he thought it'd be funny to watch people flip out for a
+while before they realized Neddy was harmless.
+
+At first everything played out as X Æ A-XII intended: people watched in first
+bewilderment, and then needless panic
+as Neddy began converting entire mountains of material in Jaxxaverse into paper clips.
+Once they realized it was just X Æ A-XII playing a joke, people calmed down, 
+and several Jaxxaverse moderators politely asked X Æ A-XII to turn Neddy off.   
+
+X Æ A-XII of course obliged, and for about a day, all was well. However, soon
+people began complaining again that Neddy was still transforming their
+belongings into paper clips.  At first X Æ A-XII thought these were other trolls
+trying to spread discord, but he soon realized something was wrong. 
+
+This event marked the beginning of the end.  Though it wasn't immediately clear
+at the time, experts later determined that soon after being released on Jaxxaverse,
+Neddy had began cloning himself to more efficiently accomplish his task.  By
+the time X Æ A-XII first turned the original Neddy off, there were about 200,000
+Neddy clones spread throughout Jaxxaverse.
+
+And unfortunately for humanity, X Æ A-XII's new SpreadProp experiments were
+actually significantly better than he had originally suspected.  `}
                         </Markdown>
                     </div>
                 </div>
