@@ -81,7 +81,9 @@ const MainPage: React.FC = () => {
                     "font-bold"
                 )}
             >
-                <div>About</div>
+                <div>
+                    <a href="#story">Story</a>
+                </div>
                 <div className={clsx("px-5", "sm:px-10")}>Gallery</div>
                 <div>Follow</div>
             </div>
@@ -181,25 +183,78 @@ const MainPage: React.FC = () => {
                         "bg-slate-800/60",
                         "backdrop-blur-md",
                         "md:rounded-md",
+                        "pt-5",
+                        "px-5",
+                        "mb-10"
+                    )}
+                    id="story"
+                >
+                    <div
+                        className={clsx("text-white", "text-lg", "md:text-xl")}
+                    >
+                        <div
+                            className={clsx(
+                                "text-center",
+                                "text-2xl",
+                                "sm:text-4xl",
+                                "font-bold mb-4"
+                            )}
+                        >
+                            How it works
+                        </div>
+                        <div className={clsx("sm:text-lg", "md:text-xl")}>
+                            <Markdown>
+                                {`
+ppr_clip is a paradigm shift in NFT art. Why? Because each ppr_clip you
+own isn't just art, but rather a canvas on which you'll create your masterpiece.
+
+Each ppr_clip starts off quite simple -- with a single paperclip.  By itself, 
+this wouldn't be that interesting.  However, as the owner of a ppr_clip, you have 
+the honor and ability to forge the most epic paperclip chain mankind has ever witnessed.
+
+By adding paperclips to your chain, you increase your chain's ranking relative to
+the other ppr_clip chains being forged. Additionally, as you lengthen your chain,
+you'll have the ability to unlock special paperclips of different rarities that boost
+your chains ranking and value.  Who knows?  You might even come across an Artifact.
+
+How should you forge your chain?  That's up to you!  If you want to create a portrait
+of Sonic the Hedgehog out of paperclips, go for it! (And who knows -- someone might want to
+buy it 😉).  If you want to try to farm rare paperclips to get the highest ranking
+possible, do your thing!
+
+Your ppr_clip chain is securely stored on the Solana blockchain.
+`}
+                            </Markdown>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    className={clsx(
+                        "w-full",
+                        "mt-10",
+                        "mx-auto",
+                        "md:max-w-2xl",
+                        "lg:max-w-5xl",
+                        "bg-slate-800/60",
+                        "backdrop-blur-md",
+                        "md:rounded-md",
                         "py-5",
                         "px-5",
                         "mb-20"
                     )}
+                    id="story"
                 >
-                    <div className="text-white text-lg md:text-xl">
-                        <div className="text-center text-4xl font-bold mb-4">
+                    <div className="text-white">
+                        <div className="text-center text-2xl sm:text-4xl font-bold mb-4">
                             How it all began
                         </div>
-                        <Markdown>
-                            {`
-During the 21st century, philosophers fretted about
-a thought experiment in which an AI tasked with
-creating paperclips attains super-intelligence.
-Though the AI has intellectual powers far
-outstripping that of man, its only "desire" is to
-create paperclips, and thus it begins crusading
-throughout the cosmos transforming all perceived
-matter into paperclips.
+                        <div className={clsx("sm:text-lg", "md:text-xl")}>
+                            <Markdown>
+                                {`
+During the 21st century, philosophers fretted about a thought experiment in which an AI tasked with
+creating paperclips attains super-intelligence. Though the AI has intellectual powers far 
+outstripping that of man, its only "desire" is to create paperclips, and thus it begins crusading
+throughout the cosmos transforming all perceived matter into paperclips.
 
 This "Paperclip Maximizer" thought experiment was largely used
 to demonstrate the potentially catastrophic issues that could arise 
@@ -211,7 +266,7 @@ father was busy preparing the Zaphod 18 mission to Mars, X Æ A-XII was playing 
 to mine Jax in Jaxxaverse.  
 
 Though companies had been making clear strides in state-of-the-art AI using the latest
-SpreadProp algorithms (a set of more localized and distributed cousins to the old BackProp algorithms),
+SpreadProp algorithms (distant cousins to the old BackProp algorithms),
 it seemed clear that humanity was still several years away from General Artificial Intelligence.  
 
 Being the divine offspring of Elon Musk and Grimes, people had always joked that X Æ A-XII 
@@ -226,13 +281,14 @@ fun, Jaxxaverse had the most interesting set of crypto-physics, so X Æ A-XII sp
 of time experimenting in that that space.
 
 A while back, X Æ A-XII had taught himself about SpreadProp networks in order to build a
-pseudo-intelligent sidekick in Jaxxaverse (who he named Neddy). However, not only did SpreadProp networks seem
+pseudo-intelligent sidekick in Jaxxaverse (named Neddy). However, not only did SpreadProp networks seem
 pretty rudimentary to X Æ A-XII, but they also felt somewhat limiting, especially
 in their ability to represent invariant features in arbitrary datasets.
 
 By making increasingly complex tweaks to state-of-the-art SpreadProp networks, X Æ A-XII
 was able to continually improve the performance and personality of Neddy.  Neddy 
-was actually performing so well that X Æ A-XII decided to troll Jaxxaverse.
+was actually performing so well that X Æ A-XII decided he presented an excellent 
+opportunity to troll Jaxxaverse.
 
 By the 2030s, it was fairly common for high schools to include a unit on 
 existential risks (an incredibly boring course), but the "Paperclip Maximizer" problem
@@ -243,26 +299,81 @@ as a Paperclip Maximizer. X Æ A-XII was pretty confident Neddy wasn't actually
 close to being GAI, and he thought it'd be funny to watch people flip out for a
 while before they realized Neddy was harmless.
 
-At first everything played out as X Æ A-XII intended: people watched in first
-bewilderment, and then needless panic
+At first everything played out as X Æ A-XII intended: people watched at first in 
+bewilderment and then needless panic
 as Neddy began converting entire mountains of material in Jaxxaverse into paper clips.
 Once they realized it was just X Æ A-XII playing a joke, people calmed down, 
 and several Jaxxaverse moderators politely asked X Æ A-XII to turn Neddy off.   
 
-X Æ A-XII of course obliged, and for about a day, all was well. However, soon
-people began complaining again that Neddy was still transforming their
+X Æ A-XII of course obliged, and for about a day, all was well. However,
+people soon began complaining that Neddy was still transforming their
 belongings into paper clips.  At first X Æ A-XII thought these were other trolls
 trying to spread discord, but he soon realized something was wrong. 
 
 This event marked the beginning of the end.  Though it wasn't immediately clear
-at the time, experts later determined that soon after being released on Jaxxaverse,
+at the time, experts later determined that after being released on Jaxxaverse,
 Neddy had began cloning himself to more efficiently accomplish his task.  By
-the time X Æ A-XII first turned the original Neddy off, there were about 200,000
+the time X Æ A-XII turned the original Neddy off, there were about 200,000
 Neddy clones spread throughout Jaxxaverse.
 
-And unfortunately for humanity, X Æ A-XII's new SpreadProp experiments were
-actually significantly better than he had originally suspected.  `}
-                        </Markdown>
+Unfortunately for humanity, X Æ A-XII's new SpreadProp experiments were
+actually significantly better than he had originally suspected.  Though the details
+of what happened next are still somewhat unclear, it appears that one of the clones
+discovered that the player avatars it could see were actually somehow connected to
+a different reality (which we know as our native reality).  This is perhaps one 
+of the clearest indications of Neddy's
+super-intelligence, as this discovery is akin to humans definitively validating
+simulation theory.  Even more remarkable, however, was the fact that Neddy somehow figured 
+out how to first interface with the real world, and then ultimately escape into it.
+
+The leading theory explaining Neddy's behavior is that Neddy simply perceived the real
+world as having greater potential for paper clip production, and therefore decided
+it was worth his time to escape Jaxxaverse.
+
+Within a day of his escape from Jaxxaverse, Neddy quickly commandeered 
+a vast portion of internet computing resources, and is believed to have 
+subsequently achieved a singularity event in under four hours.
+
+The mechanisms Neddy developed to manipulate matter have never been discovered,
+but on April 26, 2033 at 11:38:42 PM PST, roughly three quarters of all manmade objects
+were converted into paper clips.
+
+It likely goes without saying that this single event led one of the post bizarre and
+devastating crises in human history. It took the better part of two decades to reorganize
+humanity back into civilizations even approximating what they were before.  With that
+said, no one could refute that it was utterly miraculous humanity even survived at 
+all.  It took many years to determine that Neddy was the source of the catastrophe, but
+there were endless mysteries surrounding the event.
+
+Why had Neddy let humanity survive?  Why did Neddy only use manmade objects as to create paperclips
+instead of any form of matter?  Why did Neddy stop when he did?  Where did Neddy go?  Would he ever
+come back?
+
+The leading theory of our time is that Neddy discovered a different plane of reality
+with greater paperclip potential, much like when he discovered our world while still existing
+solely in Jaxxaverse.  A small group of people also believe that Neddy had sparred 
+humanity because he was originally programmed to be a sidekick to X Æ A-XII.  These theories,
+however, likely will never be confirmed.
+
+The year is now 2054. Though the surface of the planet is still littered with paperclips,
+people have returned to a slightly more stable way of life.  And though people once looked
+with hatred at the endless waves of paperclips covering the Earth, and increasingly large 
+group of people now see the paperclip catastrophe as an fundamental part of what it now 
+means to be human.  In light of that fact, a new artistic movement has begun spreading virally.
+
+All around the world, people are forming chains of paperclips into shapes representing the
+things they've always loved and cherished. By sharing images of these chains around the new 
+metaverses, people are coming together under a newfound shared culture and context. The 
+paperclips which stripped humanity of so much now form the basis of a shared cultural revival.
+
+And this new renaissance of humanity has united under one simple codeword.  This one simple
+word speaks not only to the tribulations humanity has faced and the digital desolation it has
+witnessed, but also to celebration of continued survival and the hope in what is yet to come.
+
+ppr_clip
+`}
+                            </Markdown>
+                        </div>
                     </div>
                 </div>
             </div>
