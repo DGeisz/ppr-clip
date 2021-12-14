@@ -206,7 +206,7 @@ const MainPage: React.FC = () => {
                             <Markdown>
                                 {`
 ppr_clip is a paradigm shift in NFT art. Why? Because each ppr_clip you
-own isn't just art, but rather a canvas on which you'll create your masterpiece.
+own isn't just a piece art but rather a canvas on which you'll create your masterpiece.
 
 Each ppr_clip starts off quite simple -- with a single paperclip.  By itself, 
 this wouldn't be that interesting.  However, as the owner of a ppr_clip, you have 
