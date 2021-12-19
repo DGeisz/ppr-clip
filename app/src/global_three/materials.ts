@@ -8,14 +8,19 @@ texture.wrapT = THREE.RepeatWrapping;
 texture.repeat.x = 10;
 texture.repeat.y = 6;
 
-export const BasicGold = new THREE.MeshPhysicalMaterial({
-    clearcoat: 0.9,
-    metalness: 1,
-    roughness: 0.6,
-    color: 0xffbf00,
-    normalMap: texture,
-    normalScale: new THREE.Vector2(0.15, 0.15),
-});
+function createMetallicMaterial(color: number | string): THREE.Material {
+    return new THREE.MeshPhysicalMaterial({
+        clearcoat: 0.9,
+        metalness: 1,
+        roughness: 0.6,
+        color,
+        normalMap: texture,
+        normalScale: new THREE.Vector2(0.15, 0.15),
+    });
+}
+
+export const OceanBlue = createMetallicMaterial(0x10a0de);
+export const ForestGreen = createMetallicMaterial(0x0dba2d);
 
 export const BasicMix = new THREE.ShaderMaterial({
     uniforms: {

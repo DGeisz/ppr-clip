@@ -8,7 +8,7 @@ import {
     getNewOrientationFromOld,
     startingOrientation,
 } from "../../global_building_blocks/paper_clip/types/orientation";
-import { BasicGold } from "../../global_three/materials";
+import { OceanBlue, ForestGreen, BasicMix } from "../../global_three/materials";
 import { clipOuterHeight, clipOuterWidth } from "../../constants";
 import {
     visibleHeightAtDistance,
@@ -25,6 +25,11 @@ const EditorInner: React.FC = () => {
     const [theta, setTheta] = useState<number>(0);
     const [psi, setPsi] = useState<number>(0);
     const [shiftDown, setShiftDown] = useState<boolean>(false);
+    const [mouseDown, setMouseDown] = useState<boolean>(false);
+    const [distanceFromLastClipToMouseInPlane, setMouseToClip] =
+        useState<number>(0);
+
+    const [clickDragActive, setClickDragActive] = useState<boolean>(false);
 
     const nextOrientation = getNewOrientationFromOld(lastOrientation, {
         theta,
@@ -44,28 +49,51 @@ const EditorInner: React.FC = () => {
             }
         }
 
+        function mouseDownHandler() {
+            setMouseDown(true);
+
+            /* Hack to get distance without needing 
+            to constantly add and remove event listeners */
+            setMouseToClip((distance) => {
+                if (distance < 2 * clipOuterHeight) {
+                    setClickDragActive(true);
+                }
+
+                return distance;
+            });
+        }
+
+        function mouseUpHandler() {
+            setMouseDown(false);
+            setClickDragActive(false);
+        }
+
         window.addEventListener("keydown", keydownHandler);
         window.addEventListener("keyup", keyupHandler);
+        window.addEventListener("mousedown", mouseDownHandler);
+        window.addEventListener("mouseup", mouseUpHandler);
 
         return () => {
             window.removeEventListener("keydown", keydownHandler);
             window.removeEventListener("keyup", keyupHandler);
+            window.removeEventListener("mousedown", mouseDownHandler);
+            window.removeEventListener("mouseup", mouseUpHandler);
         };
     }, []);
 
-    useEffect(() => {
-        function handler(e: MouseEvent) {
-            if (e.shiftKey) {
-                setOrientations([...orientations, nextOrientation]);
-            }
-        }
+    // useEffect(() => {
+    //     function handler(e: MouseEvent) {
+    //         if (e.shiftKey) {
+    //             setOrientations([...orientations, nextOrientation]);
+    //         }
+    //     }
 
-        window.addEventListener("click", handler);
+    //     window.addEventListener("click", handler);
 
-        return () => {
-            window.removeEventListener("click", handler);
-        };
-    }, [theta, psi]);
+    //     return () => {
+    //         window.removeEventListener("click", handler);
+    //     };
+    // }, [theta, psi]);
 
     useFrame(({ camera, mouse }) => {
         const { origin, major, normal } = lastOrientation;
@@ -79,7 +107,6 @@ const EditorInner: React.FC = () => {
 
         const clipMajorCenter = new THREE.Vector3();
         clipMajorCenter.copy(origin);
-
         clipMajorCenter.addScaledVector(major, clipOuterHeight / 2);
 
         /* cm = clip major */
@@ -121,6 +148,8 @@ const EditorInner: React.FC = () => {
             (visiblePlaneWidth / 2) * mouse.x
         );
 
+        setMouseToClip(clipMajorCenter.distanceTo(mouseInPlane));
+
         /* Next clip direction */
         const nextDirection = new THREE.Vector3();
         nextDirection.copy(clipMajorCenter);
@@ -138,11 +167,13 @@ const EditorInner: React.FC = () => {
             inClipPlane.multiplyScalar(-1);
         }
 
+        let newTheta: number;
         if (ortho.dot(inClipPlane) > 0) {
-            setTheta(-inClipPlane.angleTo(major));
+            newTheta = -inClipPlane.angleTo(major);
         } else {
-            setTheta(inClipPlane.angleTo(major));
+            newTheta = inClipPlane.angleTo(major);
         }
+        setTheta(newTheta);
 
         const tip = new THREE.Vector3();
         tip.copy(clipMajorCenter);
@@ -153,10 +184,26 @@ const EditorInner: React.FC = () => {
 
         diff.addScaledVector(tip, -1);
 
+        let newPsi: number;
         if (diff.dot(normal) > 0) {
-            setPsi(diff.angleTo(inClipPlane));
+            newPsi = diff.angleTo(inClipPlane);
         } else {
-            setPsi(-diff.angleTo(inClipPlane));
+            newPsi = -diff.angleTo(inClipPlane);
+        }
+        setPsi(newPsi);
+
+        /* Now check for click drag adders */
+        if (
+            shiftDown &&
+            mouseDown &&
+            mouseInPlane.distanceTo(clipMajorCenter) > clipOuterHeight
+        ) {
+            const nextOrientation = getNewOrientationFromOld(lastOrientation, {
+                theta: newTheta,
+                psi: newPsi,
+            });
+
+            setOrientations([...orientations, nextOrientation]);
         }
     });
 
@@ -180,12 +227,12 @@ const EditorInner: React.FC = () => {
                     <OrientedClip
                         key={`editor:${i}`}
                         orientation={orientation}
-                        material={BasicGold}
+                        material={BasicMix}
                     />
                 ))}
                 <OrientedClip
                     orientation={nextOrientation}
-                    material={BasicGold}
+                    material={BasicMix}
                 />
                 <Environment preset="sunset" />
                 <ContactShadows

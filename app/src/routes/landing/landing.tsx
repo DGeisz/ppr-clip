@@ -5,7 +5,7 @@ import {
     OrientedClip,
     PaperClip,
 } from "../../global_building_blocks/paper_clip/paper_clip";
-import { BasicGold, BasicMix } from "../../global_three/materials";
+import { BasicMix } from "../../global_three/materials";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { ClipOrientation } from "../../global_building_blocks/paper_clip/types/orientation";
 import clsx from "clsx";
@@ -65,6 +65,12 @@ const SpinningClipBackground: React.FC = () => {
 };
 
 const MainPage: React.FC = () => {
+    useEffect(() => {
+        (async () => {
+            await import("./landing.scss");
+        })();
+    }, []);
+
     return (
         <div className="h-full w-full pb-20">
             <div
@@ -187,7 +193,7 @@ const MainPage: React.FC = () => {
                         "px-5",
                         "mb-10"
                     )}
-                    id="story"
+                    // id="story"
                 >
                     <div
                         className={clsx("text-white", "text-lg", "md:text-xl")}
@@ -384,6 +390,7 @@ ppr_clip
 const Landing: React.FC = () => {
     return (
         <>
+            <div className="absolute inset-0 bg-black"></div>
             <div className="fixed overscroll-none inset-0 --z-10">
                 <SpinningClipBackground />
             </div>
