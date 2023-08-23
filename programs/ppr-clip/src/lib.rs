@@ -51,6 +51,15 @@ pub mod ppr_clip {
         clip_chain.total_square_rarity = 0;
         clip_chain.max_clip_rarity = ClipRarity::Basic;
 
+        **receiving_account.try_borrow_mut_lamports()? = receiving_account
+            .try_lamports()?
+            .checked_add(cur_balance)
+            .ok_or(ProgramError::InsufficientFunds)?;
+        **target_account.try_borrow_mut_lamports()? = target_account
+            .try_lamports()?
+            .checked_sub(cur_balance)
+            .ok_or(ProgramError::InsufficientFunds)?;
+
         anchor_lang::solana_program::program::invoke_signed(
             &anchor_lang::solana_program::system_instruction::transfer(
                 &user.key(),
